@@ -34,6 +34,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { history } from "./history";
 import { Id64Arg } from "@itwin/core-bentley";
+import { DisplayStyleSettingsProps } from "@itwin/core-common";
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -170,6 +171,13 @@ const App: React.FC = () => {
     // This will hide all the categories from viewer 
     IModelApp.viewManager.onViewOpen.addOnce(async (vp: ScreenViewport)=>{
       vp.changeCategoryDisplay(idsToHide, false);
+      const viewStyle: DisplayStyleSettingsProps = {
+        viewflags: {
+          visEdges: true,  // by making it true edges will be removed from imodel
+          shadows: true
+        }
+      }
+      vp.overrideDisplayStyle(viewStyle);
     })
   }
 
