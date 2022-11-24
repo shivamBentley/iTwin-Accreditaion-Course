@@ -1,7 +1,4 @@
-/*
-
-For API Visit the URL :  https://www.itwinjs.org/reference/core-common/displaystyles/viewflags/
----------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
@@ -37,7 +34,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { history } from "./history";
 import { Id64Arg } from "@itwin/core-bentley";
-import { DisplayStyleSettingsProps } from "@itwin/core-common";
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -147,6 +143,35 @@ const App: React.FC = () => {
     await MeasureTools.startup();
   }, []);
 
+  const onIModelConnected = async (_iModel :IModelConnection) => {
+
+    // target -> Roof  
+    let CategoriesToHide:String[] = [
+      "'Wall 2nd'",
+      "'Wall 1st'",
+      "'Dry Wall 2nd'",
+      "'Dry Wall 1st'",
+      "'Brick Exterior'",
+      "'WINDOWS 1ST'",
+      "'WINDOWS 2ND'",
+      "'Ceiling 1st'",
+      "'Ceiling 2nd'",
+      "'Callouts'",
+      "'light fixture'",
+      "'Roof'",
+    ];
+    let query = `Select ECInstanceId From BisCore.Category where CodeValue in ( ${CategoriesToHide.toString()})`
+    let categories  = _iModel.query(query);
+    let idsToHide:Id64Arg= [];
+    for await (let item of categories){
+      idsToHide.push(item[0]);
+    }
+
+    // This will hide all the categories from viewer 
+    IModelApp.viewManager.onViewOpen.addOnce(async (vp: ScreenViewport)=>{
+      vp.changeCategoryDisplay(idsToHide, false);
+    })
+  }
 
   return (
     <div className="viewer-container">
@@ -178,7 +203,7 @@ const App: React.FC = () => {
           }),
           new MeasureToolsUiItemsProvider(),
         ]}
-        
+        onIModelConnected = {onIModelConnected}
       />
     </div>
   );
