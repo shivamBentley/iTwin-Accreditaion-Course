@@ -1,5 +1,6 @@
 import { QueryRowFormat } from "@itwin/core-common";
 import { DecorateContext, Decorator, IModelConnection, Marker, ScreenViewport } from "@itwin/core-frontend";
+import { SmartDeviceMarker } from "../marker/SmartDeviceMarker";
 
 // if we don't use 'implements Decorator' then still this will work
 export class SmartDeviceDecorator implements Decorator {
@@ -32,20 +33,13 @@ export class SmartDeviceDecorator implements Decorator {
         const values = await this.getSmartDeviceData();
 
         values.forEach(value =>{
-            const smartDeviceMarker = new Marker(
+            const smartDeviceMarker = new SmartDeviceMarker(
                 {x:value.origin.x , y:value.origin.y ,z:value.origin.z },
-                {x:50 , y:50}
+                {x:50 , y:50},
+                value.smartDeviceId
             );
 
-            const htmlElement = document.createElement('div');
-            htmlElement.innerHTML= `
-                <h3>${value.smartDeviceId}</h3>
-            `
-            smartDeviceMarker.htmlElement = htmlElement;
-    
-            console.log(value.smartDeviceId)
-
-            this._markerSet.push(smartDeviceMarker);
+           this._markerSet.push(smartDeviceMarker);
         })        
     }
  
