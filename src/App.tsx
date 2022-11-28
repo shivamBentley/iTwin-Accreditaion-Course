@@ -35,6 +35,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { history } from "./history";
 import { Id64Arg } from "@itwin/core-bentley";
 import { DisplayStyleSettingsProps } from "@itwin/core-common";
+import {SmartDeviceDecorator} from './components/decorators/SmartDeviceDecorator'
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -178,6 +179,7 @@ const App: React.FC = () => {
         }
       }
       vp.overrideDisplayStyle(viewStyle);
+      IModelApp.viewManager.addDecorator(new SmartDeviceDecorator(vp));
     })
   }
 
