@@ -36,6 +36,7 @@ import { history } from "./history";
 import { DisplayStyleSettingsProps } from "@itwin/core-common";
 import {SmartDeviceDecorator} from './components/decorators/SmartDeviceDecorator'
 import {Visualization} from './Visualization'
+import {SmartDeviceUiItemsProvider} from './provider/SmartDeviceUiItemProvider'
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -178,6 +179,7 @@ const App: React.FC = () => {
         enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/web-viewer-react)
         onIModelAppInit={onIModelAppInit}
         uiProviders={[
+          new SmartDeviceUiItemsProvider(),
           new ViewerNavigationToolsProvider(),
           new ViewerContentToolsProvider({
             vertical: {

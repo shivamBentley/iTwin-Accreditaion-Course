@@ -3,9 +3,13 @@ import { IModelConnection, ScreenViewport } from "@itwin/core-frontend";
 
 export class Visualization {
 
-    public static hideHouseExterior = async (vp: ScreenViewport)=>{
+    public static hideHouseExterior = async (vp: ScreenViewport , toggle?:boolean)=>{
         const categoryIds =  await  Visualization.getCategoryIds(vp.iModel);
+        if(toggle){
+        vp.changeCategoryDisplay(categoryIds , toggle);
+      } else {
         vp.changeCategoryDisplay(categoryIds , false);
+      }
     }
 
     private static getCategoryIds = async (iModel: IModelConnection) => {

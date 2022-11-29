@@ -9,8 +9,7 @@ export class SmartDeviceMarker extends Marker {
         super(location, size);
 
         this._smartDeviceId = smartDeviceId;
-        this._smartDeviceType = smartDeviceType;
-        
+        this._smartDeviceType = smartDeviceType;        
         this.setImageUrl(`/${this._smartDeviceType}.png`)
     }
 
