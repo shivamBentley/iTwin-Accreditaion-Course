@@ -1,6 +1,7 @@
 import { IModelApp } from "@itwin/core-frontend";
-import { UiItemsProvider, ToolbarUsage, ToolbarOrientation, CommonToolbarItem, StageUsage, ToolbarItemUtilities } from "@itwin/appui-abstract";
+import { UiItemsProvider, ToolbarUsage, ToolbarOrientation, CommonToolbarItem, StageUsage, ToolbarItemUtilities, AbstractWidgetProps, StagePanelLocation, StagePanelSection } from "@itwin/appui-abstract";
 import { Visualization } from "../Visualization";
+import { SmartDeviceListWidgetComponent } from "../components/widget/SmartDeviceListWidgetComponent";
 
 export class SmartDeviceUiItemsProvider implements UiItemsProvider {
   public readonly id = "SmartDeviceUiProvider";
@@ -25,4 +26,23 @@ export class SmartDeviceUiItemsProvider implements UiItemsProvider {
 
     return toolbarButtonItems;
   }
+
+
+  public provideWidgets(stageId: string, stageUsage: string, location: StagePanelLocation, section?: StagePanelSection): ReadonlyArray<AbstractWidgetProps> {
+    const widgets: AbstractWidgetProps[] = [];
+
+    if (stageId === "DefaultFrontstage" && location === StagePanelLocation.Right) {
+
+      const widget: AbstractWidgetProps = {
+        id: "smartDeviceListWidget",
+        label: "Smart Devices",
+        getWidgetContent: () => {
+          return <SmartDeviceListWidgetComponent />
+        }
+      }
+      widgets.push(widget);
+    }
+    return widgets;
+  }
+
 }
