@@ -2,6 +2,8 @@ import { UiFramework } from "@itwin/appui-react";
 import { QueryRowFormat } from "@itwin/core-common";
 import { DecorateContext, Decorator, IModelConnection, Marker, ScreenViewport } from "@itwin/core-frontend";
 import { SmartDeviceMarker } from "../marker/SmartDeviceMarker";
+import { SmartDeviceAPI } from "../../SmartDeviceAPI";
+
 
 // if we don't use 'implements Decorator' then still this will work
 export class SmartDeviceDecorator implements Decorator {
@@ -35,6 +37,7 @@ export class SmartDeviceDecorator implements Decorator {
 
     private async addMarkers(){
         const values = await SmartDeviceDecorator.getSmartDeviceData();
+        const cloudData = await SmartDeviceAPI.getData();
 
         values.forEach(value =>{
             const smartDeviceMarker = new SmartDeviceMarker(
@@ -42,6 +45,7 @@ export class SmartDeviceDecorator implements Decorator {
                 {x:20 , y:20},
                 value.smartDeviceId,
                 value.smartDeviceType,
+                cloudData[value.smartDeviceId],
                 value.id
             );
 
